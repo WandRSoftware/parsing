@@ -1,0 +1,19 @@
+{"name": "parsing",
+"author":"Snackmonger",
+"main": "src/index.ts",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "ts-jest": "^29.4.5",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
