@@ -12,9 +12,9 @@ type TokenTemplate = {
 };
 
 /**
- * An interface for an object that returns an instance of an implementation 
+ * An interface for an object that returns an instance of an implementation
  * of `IToken`.
- * 
+ *
  * This library's default `Token` object satisfies this interface.
  */
 type TokenConstructor<T extends IToken = IToken> = new (
@@ -25,7 +25,6 @@ type TokenConstructor<T extends IToken = IToken> = new (
   line: number,
   column: number
 ) => T;
-
 
 /**
  * A text reader that sorts raw text into lexical categories.
@@ -80,7 +79,7 @@ export default class Lexer {
 
   constructor(tokenType: TokenConstructor, templates?: TokenTemplate[]) {
     if (templates) {
-      this.templates = templates
+      this.templates = templates;
     }
     this.tokenType = tokenType;
   }
@@ -98,13 +97,13 @@ export default class Lexer {
     regexPattern: RegExp,
     callback?: (lexeme: string) => unknown
   ): Lexer {
-    this.templates.push({
+    let t = [...this.templates];
+    t.push({
       tokenType: tokenType,
       regexPattern: regexPattern,
       callback: callback,
     });
-    return new Lexer(this.tokenType, this.templates)
-
+    return new Lexer(this.tokenType, t);
   }
 
   /**
@@ -261,4 +260,3 @@ export default class Lexer {
     return this._column;
   }
 }
-
