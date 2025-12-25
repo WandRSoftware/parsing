@@ -43,12 +43,7 @@ const JsonLexer = new Lexer(Token)
   .addRule(TokenType.colon, /:/);
 
 export default class JsonParser extends Parser<object> {
-  /**
-   * Parse the given string as a JSON object.
-   *
-   * @param input     A string representing a JSON object.
-   * @returns
-   */
+
   public parse(input: string): object {
     this.reset();
     this.source = input;

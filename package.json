@@ -1,5 +1,6 @@
 {"name": "parsing",
 "author":"Snackmonger",
+"private": true,
 "main": "src/index.ts",
   "devDependencies": {
     "@types/jest": "^30.0.0",

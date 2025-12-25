@@ -3,6 +3,31 @@ import { TextSymbol } from "./enums";
 import { IToken } from "./interfaces";
 
 /**
+ * A template for token type pattern matches.
+ */
+type TokenTemplate = {
+  tokenType: string;
+  regexPattern: RegExp;
+  callback?: (lexeme: string) => any;
+};
+
+/**
+ * An interface for an object that returns an instance of an implementation 
+ * of `IToken`.
+ * 
+ * This library's default `Token` object satisfies this interface.
+ */
+type TokenConstructor<T extends IToken = IToken> = new (
+  tokenType: string,
+  lexeme: string,
+  start: number,
+  end: number,
+  line: number,
+  column: number
+) => T;
+
+
+/**
  * A text reader that sorts raw text into lexical categories.
  *
  * The lexer is initialized by passing it an object that can be `new`-ed to
@@ -53,7 +78,10 @@ export default class Lexer {
   protected _line: number = 0;
   protected _column: number = 0;
 
-  constructor(tokenType: TokenConstructor) {
+  constructor(tokenType: TokenConstructor, templates?: TokenTemplate[]) {
+    if (templates) {
+      this.templates = templates
+    }
     this.tokenType = tokenType;
   }
 
@@ -69,13 +97,14 @@ export default class Lexer {
     tokenType: string,
     regexPattern: RegExp,
     callback?: (lexeme: string) => unknown
-  ): this {
+  ): Lexer {
     this.templates.push({
       tokenType: tokenType,
       regexPattern: regexPattern,
       callback: callback,
     });
-    return this;
+    return new Lexer(this.tokenType, this.templates)
+
   }
 
   /**
@@ -233,24 +262,3 @@ export default class Lexer {
   }
 }
 
-/**
- * A template for token type pattern matches.
- */
-type TokenTemplate = {
-  tokenType: string;
-  regexPattern: RegExp;
-  callback?: (lexeme: string) => any;
-};
-
-/**
- * An interface for an object that returns an instance of an implementation 
- * of `IToken`
- */
-type TokenConstructor<T extends IToken = IToken> = new (
-  tokenType: string,
-  lexeme: string,
-  start: number,
-  end: number,
-  line: number,
-  column: number
-) => T;
